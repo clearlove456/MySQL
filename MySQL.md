@@ -4,12 +4,6 @@ mysql默认的端口号时3306
 
 5.7插入中文时会报错 而8.0版本可以
 
-
-
-
-
-
-
 ## 1连接数据库
 
 mysql -uroot -p  连接数据库
@@ -148,6 +142,17 @@ SELECT 100 + null
 FROM DUAL;
 
 
+
+
+
+
+```
+
+
+
+## 运算符
+
+~~~sql
 /* 	
 		2.比较运算符 
 				2.1 = <=> <>(!=) < <= > >=
@@ -258,9 +263,13 @@ WHERE department_id BETWEEN 80 AND 100;
 SELECT last_name, salary, manager_id
 FROM employees
 WHERE manager_id IN (100, 101, 110);
+~~~
 
 
 
+## 排序与分页
+
+~~~sql
 #排序与分页
 /*
 		1.列的别名只能在ORDER BY用 不能再WHERE用
@@ -328,9 +337,15 @@ SELECT *
 FROM employees
 WHERE email LIKE "%e%"
 ORDER BY LENGTH(email) DESC, department_id;
+~~~
 
 
 
+
+
+## 多表查询
+
+~~~sql
 # 多表查询
 
 DESC locations;
@@ -495,10 +510,14 @@ SELECT employee_id, department_name
 FROM employees t1 RIGHT OUTER JOIN departments t2
 ON  t1.department_id = t2.department_id
 WHERE t1.department_id IS NULL;
+~~~
 
 
 
-```
 
 
+## 函数
+
+~~~sql
+~~~
 
