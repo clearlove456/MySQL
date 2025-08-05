@@ -516,8 +516,123 @@ WHERE t1.department_id IS NULL;
 
 
 
-## 函数
+## 单行函数
+
+作用于一行数据
 
 ~~~sql
 ~~~
+
+
+
+## 聚合函数
+
+作用于多行数据  聚集 or 分组
+
+~~~sql
+# SUM在计算总和的时候会自动过滤掉空值
+
+MAX / MIN 适用于数值类型， 字符串类型， 日期类型的字段
+COUNT  作用：计算指定字段在查询结构中出现的个数
+
+
+# 如果要计算表中有多少条记录 如何实现
+# 1：COUNT(*)  2：COUNT(1)  3:COUNT(具体字段)这种方式不一定对
+
+#ex:
+SELECT COUNT(commison_pct)
+FROM employees;
+# 由于 commison_pct 这个字段会有null的所有在执行COUNT的时候会少算
+
+# GROUP BY
+# 需求查询各个部门的平均工资
+SELECT AVG(salary)
+FROM employees
+GROUP BY department_id
+
+# SELECT 中非聚合列必须出现在 GROUP BY 中
+SELECT category, amount
+FROM sales
+GROUP BY category;
+# 这样就是错的 因为 amount 选哪个？
+
+# SELECT 里出现的每一列，要么：
+# 出现在 GROUP BY 中（分组列），
+# 或者被聚合函数包裹（SUM()、MAX()、MIN()、COUNT()、AVG() 等）。
+#  FROM  →  WHERE  →  GROUP BY  →  HAVING  →  SELECT  → DISTINCT ->  ORDER BY -> LIMIT
+
+# GROUP BY 的列顺序 对 结果内容（分组集合） 没有影响
+
+# WITH ROLLUP：
+# 除了每个精确分组，还会 自动加出每个分组层级的合计（小计）和全局的总计。
+
+SELECT region, product, SUM(sales)
+FROM sales
+GROUP BY region, product WITH ROLLUP;
+
+region | product | sum
+-------+---------+----
+East   | Apple   | 100
+East   | Orange  | 50
+East   | NULL    | 150   ← East 小计
+West   | Apple   | 200
+West   | Orange  | 150
+West   | NULL    | 350   ← West 小计
+NULL   | NULL    | 500   ← 总计
+
+ROLLUP和ORDER BY是互斥的不能同时使用
+
+
+# HAVING的使用 是用来过滤的
+SELECT department_id, MAX(salary)
+FROM employees
+GROUP BY department_id
+HAVING MAX(salary) > 10000;
+
+~~~
+
+WHERE 与 HAVING的对比
+
+区别1：WHERE 可以直接使用表中的字段作为筛选条件，但不能使用分组中的计算函数作为筛选条件； HAVING 必须要与 GROUP BY 配合使用，可以把分组计算的函数和分组字段作为筛选条件。 这决定了，在需要对数据进行分组统计的时候，HAVING 可以完成 WHERE 不能完成的任务。这是因为， 在查询语法结构中，WHERE 在 GROUP BY 之前，所以无法对分组结果进行筛选。HAVING 在 GROUP BY 之 后，可以使用分组字段和分组中的计算函数，对分组的结果集进行筛选，这个功能是 WHERE 无法完成 的。另外，WHERE排除的记录不再包括在分组中。 
+
+区别2：如果需要通过连接从关联表中获取需要的数据，WHERE 是先筛选后连接，而 HAVING 是先连接 后筛选。 这一点，就决定了在关联查询中，WHERE 比 HAVING 更高效。因为 WHERE 可以先筛选，用一 个筛选后的较小数据集和关联表进行连接，这样占用的资源比较少，执行效率也比较高。HAVING 则需要 先把结果集准备好，也就是用未被筛选的数据集进行关联，然后对这个大的数据集进行筛选，这样占用 的资源就比较多，执行效率也较低。
+
+
+
+
+
+## 子查询
+
+子查询分类
+
+1.从内查询返回的结果的条目数
+
+​	单行子查询  多行子查询
+
+2.子查询是否被执行多次
+
+​	相关子查询  不相关子查询
+
+
+
+
+
+~~~sql
+# 注意这样写会有空值问题
+SELECT last_name
+ FROM employees
+ WHERE employee_id NOT IN (
+            SELECT manager_id
+            FROM employees
+            );
+            
+
+ 
+~~~
+
+
+
+
+
+
 
