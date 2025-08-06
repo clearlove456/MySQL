@@ -636,3 +636,125 @@ SELECT last_name
 
 
 
+## 数据类型
+
+### 整数类型
+
+TINYINT   
+
+SMALLINT  
+
+MEDIUMINT 
+
+INT、INTEGER 
+
+BIGINT
+
+### 浮点类型
+
+FLOAT
+
+DOUBLE
+
+### 定点数类型
+
+DECIMAL
+
+### 位类型
+
+BIT
+
+### 日期与时间类型
+
+YEAR
+
+DATA
+
+TIME
+
+DATATIME
+
+TIMESTAMP
+
+### 文本字符串类型
+
+CHAR
+
+VARCHAR
+
+TINYTEXT
+
+TEXT
+
+MEDIUMTEXT
+
+LONGTEXT
+
+ENUM
+
+SET
+
+### 二进制字符串类型
+
+BINARY
+
+VARBINARY
+
+### BLOB类型
+
+TINYBLOB
+
+BLOB
+
+MEDIUMBLOB
+
+LONGBLOB
+
+
+
+
+
+## 约束
+
+约束是表级的强制规定。为了保证数据的完整性
+
+约束的区分
+
+1.约束字段的个数
+
+单列约束，多列约束
+
+2.约束的作用范围
+
+列级约束：将此约束声明在对应字段的后面
+
+表级范围：在表中将所有的字段都声明完后，在所有字段的后面声明的约束
+
+3.约束的作用
+
+not null 非空约束
+
+unique 唯一性约束
+
+primary key 主键约束
+
+foreign key 外键约束
+
+check 检查约束
+
+default 默认值约束
+
+~~~sql
+# 查看表的约束
+SELECT * FROM information_schema.table_constraints 
+WHERE table_name = '表名称';
+~~~
+
+
+
+
+
+
+
+
+
